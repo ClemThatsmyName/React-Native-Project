@@ -7,10 +7,12 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
 export const PieceContext = React.createContext({
-  compteur: '',
+  total: '',
   setCompt: () => {},
   check: {},
-  setCheck: () => {}
+  setCheck: () => {},
+  countCheck: {},
+  setCoutC: () => {}
 });
 
 export default function App() {
@@ -22,14 +24,21 @@ export default function App() {
     check_compteur: 0,
     check_fin: false,
     check_SM: false,
+    check_Malte: false,
+    check_Monaco: false,
+    check_Vatican5: false,
+    check_Vatican6: false
   });
 
+  const [sommeCheck, setSommeC] = useState(0);
 
   const valeurPiece = {
-    compteur: compt,
-    setCompt: setCompt,
+    total: compt,
+    setTotal: setCompt,
     check: check,
-    setCheck: setCheck
+    setCheck: setCheck,
+    countCheck: sommeCheck,
+    setCoutC: setSommeC
   }
 
   if (!isLoadingComplete) {

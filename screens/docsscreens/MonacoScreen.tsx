@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, Button, CheckBox, Switch, Platform, ScrollView  } from 'react-native';
 import { useFonts } from 'expo-font';
+import { PieceContext } from '../../App';
 
 export default function Monaco() {
   const [loaded, error] = useFonts({
@@ -10,6 +11,16 @@ export default function Monaco() {
     Montserrat_italic: require('../../assets/fonts/Montserrat-LightItalic.ttf'),
     Montserrat_bold: require('../../assets/fonts/Montserrat-Bold.ttf'),
   });
+
+  const valeurPiece = useContext(PieceContext);
+
+  const setSelectionMonaco = () => {
+    var bool = !(valeurPiece.check.check_Monaco);
+    valeurPiece.setCheck({...valeurPiece.check, check_Monaco: bool});
+    {valeurPiece.check.check_Monaco === false ?  valeurPiece.setTotal(valeurPiece.total + 340):valeurPiece.setTotal(valeurPiece.total - 340)}
+    {valeurPiece.check.check_Monaco === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+  };
+
   return(
     <View style={styles.container}>
       <Text style={[styles.titre, loaded && {fontFamily: 'Montserrat_bold'}]}>2 euro - Monaco 2016</Text>
@@ -29,8 +40,9 @@ export default function Monaco() {
      </Text>
 
      <View style={styles.buy}>
+       <Text style={[{color: '#5D61A4', width: '25%', fontSize: 20}, loaded && {fontFamily: 'Montserrat_bold'}]}> 340€ </Text>
        <Text style={[styles.el1_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Ajouter au Panier</Text>
-       {Platform.OS === "ios" ? <Switch style={styles.switch} />: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+       {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_Monaco}  onValueChange={setSelectionMonaco} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_Monaco}  onValueChange={setSelectionMonaco} tintColors={{ true: '#E7E3D4'}}/>}
      </View>
     </View>
   );

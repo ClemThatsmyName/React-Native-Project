@@ -11,6 +11,7 @@ import Vatican2006Screen from 'docsscreens/Vatican2006Screen';
 
 import { PieceContext } from '../App';
 import { useFonts } from 'expo-font';
+// import { setSelectionfin, setSelectionSM } from "./setSelect";
 
 export default function TabOneScreen( {navigation} ) {
 
@@ -24,23 +25,53 @@ export default function TabOneScreen( {navigation} ) {
     Montserrat_bold: require('../assets/fonts/Montserrat-Bold.ttf'),
   });
 
-  var compteur = valeurPiece.compteur;
-  var check_SM = valeurPiece.check.check_SM;
-  var check_fin = valeurPiece.check.check_fin;
-  var check_compteur = valeurPiece.check.check_compteur;
+  const setSelectionfin = () => {
+    var bool = !(valeurPiece.check.check_fin);
+    valeurPiece.setCheck({...valeurPiece.check, check_fin: bool});
 
-  const setSelection = () => {
-    var bool = valeurPiece.check.check_fin;
-    bool = !bool;
-    valeurPiece.setCheck({check_compteur: check_compteur, check_fin: bool, check_SM: check_SM});
-
-    if (valeurPiece.check.check_fin === false) {
-      valeurPiece.setCheck({check_compteur: check_compteur + 1, check_fin: bool, check_SM: check_SM})
-    }else{
-      valeurPiece.setCheck({check_compteur: check_compteur - 1, check_fin: bool, check_SM: check_SM})
-    }
+    {valeurPiece.check.check_fin === false ?  valeurPiece.setTotal(valeurPiece.total + 40):valeurPiece.setTotal(valeurPiece.total - 40)}
+    {valeurPiece.check.check_fin === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
   };
 
+  const setSelectionSM = () => {
+    var bool = !(valeurPiece.check.check_SM);
+    valeurPiece.setCheck({...valeurPiece.check, check_SM: bool});
+
+    {valeurPiece.check.check_SM === false ?  valeurPiece.setTotal(valeurPiece.total + 200):valeurPiece.setTotal(valeurPiece.total - 200)}
+    {valeurPiece.check.check_SM === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+  };
+
+  const setSelectionMalte = () => {
+    var bool = !(valeurPiece.check.check_Malte);
+    valeurPiece.setCheck({...valeurPiece.check, check_Malte: bool});
+
+    {valeurPiece.check.check_Malte === false ?  valeurPiece.setTotal(valeurPiece.total + 15):valeurPiece.setTotal(valeurPiece.total - 15)}
+    {valeurPiece.check.check_Malte === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+  };
+
+  const setSelectionMonaco = () => {
+    var bool = !(valeurPiece.check.check_Monaco);
+    valeurPiece.setCheck({...valeurPiece.check, check_Monaco: bool});
+    {valeurPiece.check.check_Monaco === false ?  valeurPiece.setTotal(valeurPiece.total + 340):valeurPiece.setTotal(valeurPiece.total - 340)}
+    {valeurPiece.check.check_Monaco === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+
+  };
+
+  const setSelectionVatican5 = () => {
+    var bool = !(valeurPiece.check.check_Vatican5);
+    valeurPiece.setCheck({...valeurPiece.check, check_Vatican5: bool});
+    {valeurPiece.check.check_Vatican5 === false ?  valeurPiece.setTotal(valeurPiece.total + 220):valeurPiece.setTotal(valeurPiece.total - 220)}
+    {valeurPiece.check.check_Vatican5 === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+
+  };
+
+  const setSelectionVatican6 = () => {
+    var bool = !(valeurPiece.check.check_Vatican6);
+    valeurPiece.setCheck({...valeurPiece.check, check_Vatican6: bool});
+    {valeurPiece.check.check_Vatican6 === false ?  valeurPiece.setTotal(valeurPiece.total + 200):valeurPiece.setTotal(valeurPiece.total - 200)}
+    {valeurPiece.check.check_Vatican6 === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+
+  };
 
 
 
@@ -50,9 +81,8 @@ export default function TabOneScreen( {navigation} ) {
       <ScrollView contentContainerStyle={{paddingBottom: 380}}>
         <View style={styles.contmosaic}>
 
-          <Text style={[styles.snd_title, loaded && {fontFamily: 'Montserrat_light'}]}>Pièces de 2 euros {valeurPiece.check.check_compteur}</Text>
+          <Text style={[styles.snd_title, loaded && {fontFamily: 'Montserrat_light'}]}>Pièces de 2 euros :</Text>
 
-          <Button title='+' onPress={() => {valeurPiece.setCompt(compteur + 1)}}/>
 
           <View style={styles.mosaic}>
 
@@ -69,7 +99,7 @@ export default function TabOneScreen( {navigation} ) {
               <View style={styles.buy}>
 
                 <Text style={[styles.el1_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Acheter</Text>
-                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_fin} onValueChange={setSelection} />: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_fin} onValueChange={setSelection} tintColors={{ true: '#E7E3D4'}}/>}
+                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_fin} onValueChange={setSelectionfin}  trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_fin} onValueChange={setSelectionfin} tintColors={{ true: '#E7E3D4'}}/>}
               </View>
             </View>
 
@@ -85,7 +115,7 @@ export default function TabOneScreen( {navigation} ) {
               </TouchableOpacity>
               <View style={styles.buy}>
                 <Text style={[styles.el2_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Acheter</Text>
-                {Platform.OS === "ios" ? <Switch style={styles.switch} onValueChange={setSelection}/>: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_SM} onValueChange={setSelectionSM} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_SM} onValueChange={setSelectionSM} tintColors={{ true: '#E7E3D4'}}/>}
               </View>
             </View>
 
@@ -100,7 +130,7 @@ export default function TabOneScreen( {navigation} ) {
               </TouchableOpacity>
               <View style={styles.buy}>
                 <Text style={[styles.el3_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Acheter</Text>
-                {Platform.OS === "ios" ? <Switch style={styles.switch} onValueChange={setSelection}/>: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_Vatican5} onValueChange={setSelectionVatican5} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_Vatican5} onValueChange={setSelectionVatican5} tintColors={{ true: '#E7E3D4'}}/>}
               </View>
             </View>
 
@@ -116,7 +146,7 @@ export default function TabOneScreen( {navigation} ) {
               </TouchableOpacity>
               <View style={styles.buy}>
                 <Text style={[styles.el4_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Acheter</Text>
-                {Platform.OS === "ios" ? <Switch style={styles.switch} onValueChange={setSelection}/>: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_Vatican6} onValueChange={setSelectionVatican6} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_Vatican6} onValueChange={setSelectionVatican6} tintColors={{ true: '#E7E3D4'}}/>}
               </View>
             </View>
 
@@ -130,7 +160,7 @@ export default function TabOneScreen( {navigation} ) {
               </TouchableOpacity>
               <View style={styles.buy}>
                 <Text style={[styles.el5_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Acheter</Text>
-                {Platform.OS === "ios" ? <Switch style={styles.switch} onValueChange={setSelection}/>: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_Monaco} onValueChange={setSelectionMonaco} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_Monaco} onValueChange={setSelectionMonaco} tintColors={{ true: '#E7E3D4'}}/>}
               </View>
             </View>
 
@@ -144,7 +174,7 @@ export default function TabOneScreen( {navigation} ) {
               </TouchableOpacity>
               <View style={styles.buy}>
                 <Text style={[styles.el6_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Acheter</Text>
-                {Platform.OS === "ios" ? <Switch style={styles.switch} onValueChange={setSelection}/>: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+                {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_Malte} onValueChange={setSelectionMalte} trackColor={{true: '#5D61A4'}} />: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_Malte} onValueChange={setSelectionMalte} tintColors={{ true: '#E7E3D4'}}/>}
               </View>
             </View>
 

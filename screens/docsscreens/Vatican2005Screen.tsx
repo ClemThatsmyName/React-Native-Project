@@ -1,6 +1,8 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, Button, CheckBox, Switch, Platform, ScrollView  } from 'react-native';
 import { useFonts } from 'expo-font';
+import { PieceContext } from '../../App';
+
 
 export default function Vatican2005() {
   const [loaded, error] = useFonts({
@@ -10,6 +12,17 @@ export default function Vatican2005() {
     Montserrat_italic: require('../../assets/fonts/Montserrat-LightItalic.ttf'),
     Montserrat_bold: require('../../assets/fonts/Montserrat-Bold.ttf'),
   });
+
+  const valeurPiece = useContext(PieceContext);
+
+  const setSelectionVatican5 = () => {
+    var bool = !(valeurPiece.check.check_Vatican5);
+    valeurPiece.setCheck({...valeurPiece.check, check_Vatican5: bool});
+    {valeurPiece.check.check_Vatican5 === false ?  valeurPiece.setTotal(valeurPiece.total + 220):valeurPiece.setTotal(valeurPiece.total - 220)}
+    {valeurPiece.check.check_Vatican5 === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
+
+  };
+
   return(
     <View style={styles.container}>
       <Text style={[styles.titre, loaded && {fontFamily: 'Montserrat_bold'}]}>2 euro - Vatican 2005</Text>
@@ -30,8 +43,9 @@ export default function Vatican2005() {
      </Text>
 
      <View style={styles.buy}>
-       <Text style={[styles.el1_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Ajouter au Panier</Text>
-       {Platform.OS === "ios" ? <Switch style={styles.switch} />: <CheckBox style={styles.checkbox} tintColors={{ true: '#E7E3D4'}}/>}
+      <Text style={[{color: '#5D61A4', width: '25%', fontSize: 20}, loaded && {fontFamily: 'Montserrat_bold'}]}> 220€ </Text>
+      <Text style={[styles.el1_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Ajouter au Panier</Text>
+      {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_Vatican5} onValueChange={setSelectionVatican5} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_Vatican5} onValueChange={setSelectionVatican5} tintColors={{ true: '#E7E3D4'}}/>}
      </View>
     </View>
   );

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, Button, CheckBox, Switch, Platform, ScrollView, TouchableOpacity  } from 'react-native';
 import { useFonts } from 'expo-font';
 
@@ -10,6 +10,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import Basket from '../screens/Basket';
+import CommandeScreen from "../screens/CommandeScreen";
 
 import FinlandaisScreen from '../screens/docsscreens/FinlandaisScreen';
 import MalteScreen from '../screens/docsscreens/MalteScreen';
@@ -17,6 +18,8 @@ import MonacoScreen from '../screens/docsscreens/MonacoScreen';
 import SaintMartinScreen from '../screens/docsscreens/SaintMartinScreen';
 import Vatican2005Screen from '../screens/docsscreens/Vatican2005Screen';
 import Vatican2006Screen from '../screens/docsscreens/Vatican2006Screen';
+
+import { PieceContext } from '../App';
 
 
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
@@ -123,6 +126,18 @@ function TabOneNavigator() {
           header: props => <Top {...props} />,
         })}
       />
+
+      <TabOneStack.Screen
+        name="CommandeScreen"
+        component={CommandeScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: props => <TopBasket {...props} />,
+          headerBackTitle: 'Retour',
+          headerTitleAlign: 'center',
+          headerTintColor: 'black',
+          headerStyle: {backgroundColor: '#E7E3D4'}
+        })}
+      />
     </TabOneStack.Navigator>
   );
 }
@@ -142,15 +157,23 @@ function TabTwoNavigator() {
 }
 
 function Top( {navigation} ) {
+
+  const valeurPiece = useContext(PieceContext);
+
   const [loaded, error] = useFonts({
-    AbrilFatfaceRegular: require('../assets/fonts/AbrilFatface-Regular.ttf')
+    AbrilFatfaceRegular: require('../assets/fonts/AbrilFatface-Regular.ttf'),
+    Montserrat: require('../assets/fonts/Montserrat-Medium.ttf'),
   });
+
   return (
     <View style={styles.cont_title}>
       {Platform.OS === "ios" ?
       <View style={styles.container_title_ios}>
         <Text style={[styles.title, loaded && {fontFamily: 'AbrilFatfaceRegular'}]}>DeliSous</Text>
         <TouchableOpacity onPress={() => navigation.push("Basket")} style={styles.touch}>
+          <View style={styles.labelcount}>
+            <Text style={[{color: '#E7E3D4'}, loaded && {fontFamily: 'Montserrat'}]}>{valeurPiece.countCheck}</Text>
+          </View>
           <Image source={require('../assets/images/shopping-cart.png')} />
         </TouchableOpacity>
       </View>
@@ -158,6 +181,9 @@ function Top( {navigation} ) {
       <View style={styles.container_title_and}>
         <Text style={[styles.title, loaded && {fontFamily: 'AbrilFatfaceRegular'}]}>DeliSous</Text>
         <TouchableOpacity onPress={() => navigation.push("Basket")} style={styles.touch}>
+        <View style={styles.labelcount}>
+          <Text style={[{color: '#E7E3D4'}, loaded && {fontFamily: 'Montserrat'}]}>{valeurPiece.countCheck}</Text>
+        </View>
           <Image source={require('../assets/images/shopping-cart.png')} />
         </TouchableOpacity>
       </View>
@@ -183,6 +209,17 @@ const styles = StyleSheet.create({
   container_title_ios: {
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+
+  labelcount: {
+    backgroundColor: '#5D61A4',
+    height: 20,
+    width: 20,
+    position: 'absolute',
+    top: -8, right: -6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 40,
   },
 
   title: {

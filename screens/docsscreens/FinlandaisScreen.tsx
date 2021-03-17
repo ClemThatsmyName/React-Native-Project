@@ -15,26 +15,27 @@ export default function Finlandais() {
 
   const valeurPiece = useContext(PieceContext);
 
-  var check_SM = valeurPiece.check.check_SM;
-  var check_fin = valeurPiece.check.check_fin;
-    var check_compteur = valeurPiece.check.check_compteur;
+  const setSelectionfin = () => {
+    var bool = !(valeurPiece.check.check_fin);
+    valeurPiece.setCheck({...valeurPiece.check, check_fin: bool});
+    console.log(valeurPiece.check);
 
-  const setSelection = () => {
-    var bool = valeurPiece.check.check_fin;
-    bool = !bool;
-    valeurPiece.setCheck({check_compteur: check_compteur, check_fin: bool, check_SM: check_SM});
+    // if (valeurPiece.check.check_fin === false) {
+    //   valeurPiece.setCheck({ check_compteur: 5, ...valeurPiece.check});
+    //   console.log(valeurPiece.check);
+    //   }else{
+    //     valeurPiece.setCheck({check_compteur: 15, ...valeurPiece.check});
+    //     console.log(valeurPiece.check);
+    // }
 
-    if (valeurPiece.check.check_fin === false) {
-      valeurPiece.setCheck({check_compteur: check_compteur + 1, check_fin: bool, check_SM: check_SM})
-    }else{
-      valeurPiece.setCheck({check_compteur: check_compteur - 1, check_fin: bool, check_SM: check_SM})
-    }
+    {valeurPiece.check.check_fin === false ?  valeurPiece.setTotal(valeurPiece.total + 40):valeurPiece.setTotal(valeurPiece.total - 40)}
+    {valeurPiece.check.check_fin === false ?  valeurPiece.setCoutC(valeurPiece.countCheck + 1):valeurPiece.setCoutC(valeurPiece.countCheck - 1)}
 
   };
 
   return(
     <View style={styles.container}>
-      <Text style={[styles.titre, loaded && {fontFamily: 'Montserrat_bold'}]}>2 euro - Finlande 2004 {valeurPiece.compteur}</Text>
+      <Text style={[styles.titre, loaded && {fontFamily: 'Montserrat_bold'}]}>2 euro - Finlande 2004 </Text>
       <Text style={[styles.subhead, loaded && {fontFamily: 'Montserrat'}]}>Monnaie commémorative</Text>
       <Text style={[styles.subheadbis, loaded && {fontFamily: 'Montserrat'}]}>Elargissement de l’Union européenne à dix nouveaux États membres</Text>
       <View style={{height: '27%', width: '100%', overflow: 'hidden', justifyContent: 'center', paddingTop:'5%'}}>
@@ -49,8 +50,9 @@ export default function Finlandais() {
      </Text>
 
      <View style={styles.buy}>
+       <Text style={[{color: '#5D61A4', width: '25%', fontSize: 20}, loaded && {fontFamily: 'Montserrat_bold'}]}> 40€ </Text>
        <Text style={[styles.el1_buy, loaded && {fontFamily: 'Montserrat_bold'}]}>Ajouter au Panier</Text>
-       {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_fin} onValueChange={setSelection} />: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_fin} onValueChange={setSelection} tintColors={{ true: '#E7E3D4'}}/>}
+       {Platform.OS === "ios" ? <Switch style={styles.switch} value={valeurPiece.check.check_fin}  onValueChange={setSelectionfin} trackColor={{true: '#5D61A4'}}/>: <CheckBox style={styles.checkbox} value={valeurPiece.check.check_fin}  onValueChange={setSelectionfin} tintColors={{ true: '#E7E3D4'}}/>}
      </View>
     </View>
   );
